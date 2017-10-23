@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>在线Excel</title>
     <link rel="stylesheet" type="text/css" href="./css/excel.css">
 </head>
@@ -10,79 +11,84 @@
 <body>
     <div id="table-container">
     </div>
-    <script type="text/javascript" src="./js/excel.js"></script>
+    <!-- 兼容ie8及以上 -->
+    <!--[if gt IE 7]>
+        <script src="./js/ie8.js"></script>
+    <![endif]-->
+    <!-- <script type="text/javascript" src="./js/excel.js"></script> -->
+    <script type="text/javascript" src="./js/excelCompiled.js"></script>
     <script type="text/javascript">
-        const cols = [{
-            id: 1,
-            name: '行政办公费'
-        }, {
-            id: 101,
-            pid: 1,
-            name: '办公费',
-        }, {
-            id: 102,
-            pid: 1,
-            name: '会务费',
-        }, {
-            id: 103,
-            pid: 1,
-            name: '计算机维护费',
-        }, {
-            id: 104,
-            pid: 1,
-            name: '交际应酬费',
-        }, {
-            id: 105,
-            pid: 1,
-            name: '汽车费用',
-        }, {
-            id: 106,
-            pid: 1,
-            name: '水电费',
-        }, {
-            id: 107,
-            pid: 1,
-            name: '邮电费',
-        }, {
-            id: 2,
-            name: '其他办公费',
-        }, {
-            id: 201,
-            pid: 2,
-            name: '其他费用',
-        }, ];
-        const rows = [{
-            id: 1,
-            name: '第一季度',
-        }, {
-            id: 101,
-            pid: 1,
-            name: '1月',
-        }, {
-            id: 102,
-            pid: 1,
-            name: '2月',
-        }, {
-            id: 103,
-            pid: 1,
-            name: '3月',
-        }, {
-            id: 2,
-            name: '第二季度',
-        }, {
-            id: 201,
-            pid: 2,
-            name: '4月',
-        }, {
-            id: 202,
-            pid: 2,
-            name: '5月',
-        }, {
-            id: 203,
-            pid: 2,
-            name: '6月',
-        }, ];
-        window.creatExcel(cols, rows, "table-container");
+    var cols = [{
+        id: 1,
+        name: '行政办公费'
+    }, {
+        id: 101,
+        pid: 1,
+        name: '办公费',
+    }, {
+        id: 102,
+        pid: 1,
+        name: '会务费',
+    }, {
+        id: 103,
+        pid: 1,
+        name: '计算机维护费',
+    }, {
+        id: 104,
+        pid: 1,
+        name: '交际应酬费',
+    }, {
+        id: 105,
+        pid: 1,
+        name: '汽车费用',
+    }, {
+        id: 106,
+        pid: 1,
+        name: '水电费',
+    }, {
+        id: 107,
+        pid: 1,
+        name: '邮电费',
+    }, {
+        id: 2,
+        name: '其他办公费',
+    }, {
+        id: 201,
+        pid: 2,
+        name: '其他费用',
+    }];
+    var rows = [{
+        id: 1,
+        name: '第一季度',
+    }, {
+        id: 101,
+        pid: 1,
+        name: '1月',
+    }, {
+        id: 102,
+        pid: 1,
+        name: '2月',
+    }, {
+        id: 103,
+        pid: 1,
+        name: '3月',
+    }, {
+        id: 2,
+        name: '第二季度',
+    }, {
+        id: 201,
+        pid: 2,
+        name: '4月',
+    }, {
+        id: 202,
+        pid: 2,
+        name: '5月',
+    }, {
+        id: 203,
+        pid: 2,
+        name: '6月',
+    }];
+    window.creatExcel(cols, rows, "table-container");
     </script>
 </body>
 

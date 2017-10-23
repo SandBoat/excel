@@ -12,6 +12,8 @@ body {
 }
 
 
+
+
 /************************ table ************************/
 
 table {
@@ -39,11 +41,12 @@ th {
 }
 
 tbody th {
+    height: 50px;
     text-align: left;
 }
 
 tbody tr[data-tr-level="1"] th {
-    padding-left: 36px;
+    padding-left: 44px;
 }
 
 td {
@@ -59,32 +62,26 @@ td {
     user-select: none;
 }
 
-.drag.drag-right:hover {
-    cursor: e-resize;
-}
-
-.drag.drag-bottom:hover {
-    cursor: n-resize;
-}
-
 .toggle {
     display: inline-block;
     box-sizing: border-box;
-    margin: 0 15px 0 -15px;
+    margin: 0 15px 0 -10px;
     border: 6px solid transparent;
     border-bottom-color: #fff;
     border-right-color: #fff;
-    transform: rotate(-45deg);
 }
 
 .toggle:hover {
     cursor: pointer;
-    /*transform: rotate(0deg);*/
-    /*border: 1px solid #2980B9;*/
 }
 
 .fold .toggle {
-    transform: rotate(0deg);
+    border-top-color: transparent\0;
+    border-right-color: transparent\0;
+    border-bottom-color: transparent\0;
+    border-left-color: #fff\0;
+    transform: rotate(-45deg);
+    transform: rotate(0deg)\9\0;
 }
 
 .edit {
@@ -96,21 +93,27 @@ td {
     background-color: #ecf6fd;
 }
 
-.edit.edit-now:hover {
-    background-color: inherit;
-}
-
 .edit.change {
     background-color: #FFEB3B;
 }
 
+.edit.edit-now {
+    background-color: #fff;
+}
+
+.edit.edit-now:hover {
+    background-color: #fff;
+}
+
 .edit .edit-in {
-    width: 140px;
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
     padding: 0 10px;
 }
 
 .edit-in input {
-    float: left;
+    flex: 1;
     box-sizing: border-box;
     width: 120px;
     height: 30px;
@@ -118,7 +121,7 @@ td {
 }
 
 .edit-in-btns {
-    float: left;
+    display: none\0;
     width: 20px;
 }
 
@@ -141,6 +144,7 @@ td {
     border-left: 1px solid #000;
     border-bottom: 1px solid #000;
     transform: rotate(-45deg);
+    -ms-filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=0.866025404, M12=0.5, M21=-0.5, M22=0.866025404);
 }
 
 .edit-in-btns .bottom:before {

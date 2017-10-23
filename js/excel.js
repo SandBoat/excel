@@ -322,7 +322,7 @@
             this.datavalue = datas[this.dataid].value;
             this.target.classList.add("edit-now");
 
-            this.target.innerHTML = `<div class="edit-in edit-${this.dataid} clearfix"><input type="text" autofocus="autofocus" value="${this.datavalue}" /><div class="edit-in-btns"><div class="top"></div><div class="bottom"></div></div></div>`;
+            this.target.innerHTML = `<div class="edit-in edit-${this.dataid} clearfix"><input type="number" value="${this.datavalue}" /><div class="edit-in-btns"><div class="top"></div><div class="bottom"></div></div></div>`;
             this.inp = document.querySelector(`.edit-${this.dataid} input`);
             this.confirmBtn = document.querySelector(`.edit-${this.dataid} .top`);
             this.cancelBtn = document.querySelector(`.edit-${this.dataid} .bottom`);

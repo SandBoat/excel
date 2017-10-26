@@ -2,179 +2,189 @@
 
 html,
 body {
-    margin: 0;
-    font-size: 14px;
+  margin: 0;
+  font-size: 14px;
 }
 
 .clearfix {
-    overflow: hidden;
-    _zoom: 1;
+  overflow: hidden;
+  _zoom: 1;
 }
-
-
 
 
 /************************ table ************************/
 
 table {
-    margin: 50px;
-    border-collapse: separate;
-    border-spacing: 0;
+  margin: 50px;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 td,
 th {
-    box-sizing: border-box;
-    min-width: 120px;
-    height: 40px;
-    text-align: center;
-    white-space: nowrap;
+  box-sizing: border-box;
+  min-width: 120px;
+  height: 40px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 th {
-    padding: 12px 16px;
-    background-color: #03A9F4;
-    border-right: 1px solid #008ccc;
-    border-bottom: 1px solid #008ccc;
-    color: #f7f7f7;
-    font-size: 16px;
+  padding: 12px 16px;
+  background-color: #03A9F4;
+  border-right: 1px solid #008ccc;
+  border-bottom: 1px solid #008ccc;
+  color: #f7f7f7;
+  font-size: 16px;
 }
 
 tbody th {
-    height: 50px;
-    text-align: left;
+  height: 50px;
+  text-align: left;
 }
 
 tbody tr[data-tr-level="1"] th {
-    padding-left: 44px;
+  padding-left: 44px;
 }
 
 td {
-    background-color: #eee;
-    border-right: 1px solid #e9e9e9;
-    border-bottom: 1px solid #e9e9e9;
+  background-color: #eee;
+  border-right: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
 }
 
 .drag {
-    -ms-user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .toggle {
-    display: inline-block;
-    box-sizing: border-box;
-    margin: 0 15px 0 -10px;
-    border: 6px solid transparent;
-    border-bottom-color: #fff;
-    border-right-color: #fff;
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 0 15px 0 -10px;
+  border: 6px solid transparent;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
 }
 
 .toggle:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .fold .toggle {
-    border-top-color: transparent\0;
-    border-right-color: transparent\0;
-    border-bottom-color: transparent\0;
-    border-left-color: #fff\0;
-    transform: rotate(-45deg);
-    transform: rotate(0deg)\9\0;
+  border-right-color: transparent\0;
+  border-bottom-color: transparent\0;
+  border-left-color: #fff\0;
+  transform: rotate(-45deg);
+  transform: rotate(0deg)\0;
+}
+
+:root .fold .toggle {
+  border-bottom-color: #fff;
+  border-right-color: #fff;
+  border-left-color: transparent;
+  transform: rotate(-45deg);
 }
 
 .edit {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .edit:hover {
-    cursor: pointer;
-    background-color: #ecf6fd;
+  cursor: pointer;
+  background-color: #ecf6fd;
 }
 
 .edit.change {
-    background-color: #FFEB3B;
+  background-color: #FFEB3B;
 }
 
 .edit.edit-now {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .edit.edit-now:hover {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 .edit .edit-in {
-    box-sizing: border-box;
-    display: flex;
-    width: 100%;
-    padding: 0 10px;
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  padding: 0 10px;
 }
 
 .edit-in input {
-    flex: 1;
-    box-sizing: border-box;
-    width: 120px;
-    height: 30px;
-    padding: 4px 8px;
+  float: left\0;
+  flex: 1;
+  box-sizing: border-box;
+  width: 120px;
+  height: 30px;
+  padding: 4px 8px;
 }
 
 .edit-in-btns {
-    display: none\0;
-    width: 20px;
+  float: left\0;
+  display: block;
+  display: none\0;
+  width: 20px;
+}
+/* >ie8 */
+:root .edit-in-btns {
+  display: block;
 }
 
 .edit-in-btns .top,
 .edit-in-btns .bottom {
-    box-sizing: border-box;
-    width: 20px;
-    height: 15px;
-    line-height: 15px;
+  box-sizing: border-box;
+  width: 20px;
+  height: 15px;
+  line-height: 15px;
 }
 
 .edit-in-btns .top:before {
-    content: '';
-    display: inline-block;
-    position: relative;
-    bottom: 4px;
-    margin: 0 auto;
-    width: 10px;
-    height: 4px;
-    border-left: 1px solid #000;
-    border-bottom: 1px solid #000;
-    transform: rotate(-45deg);
-    -ms-filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=0.866025404, M12=0.5, M21=-0.5, M22=0.866025404);
+  content: '';
+  display: inline-block;
+  position: relative;
+  bottom: 4px;
+  margin: 0 auto;
+  width: 10px;
+  height: 4px;
+  border-left: 1px solid #000;
+  border-bottom: 1px solid #000;
+  transform: rotate(-45deg);
 }
 
 .edit-in-btns .bottom:before {
-    content: '';
-    display: inline-block;
-    position: relative;
-    bottom: 4px;
-    left: 4px;
-    margin: 0 auto;
-    width: 10px;
-    height: 4px;
-    border-bottom: 1px solid #000;
-    transform: rotate(-45deg);
+  content: '';
+  display: inline-block;
+  position: relative;
+  bottom: 4px;
+  left: 4px;
+  margin: 0 auto;
+  width: 10px;
+  height: 4px;
+  border-bottom: 1px solid #000;
+  transform: rotate(-45deg);
 }
 
 .edit-in-btns .bottom::after {
-    content: '';
-    display: inline-block;
-    position: relative;
-    bottom: 4px;
-    right: 3px;
-    margin: 0 auto;
-    width: 10px;
-    height: 4px;
-    border-bottom: 1px solid #000;
-    transform: rotate(45deg);
+  content: '';
+  display: inline-block;
+  position: relative;
+  bottom: 4px;
+  right: 3px;
+  margin: 0 auto;
+  width: 10px;
+  height: 4px;
+  border-bottom: 1px solid #000;
+  transform: rotate(45deg);
 }
 
 .edit-in-btns .top:hover,
 .edit-in-btns .bottom:hover {
-    /* border: 1px solid #000; */
-    background-color: #c7c7c7;
+  /* border: 1px solid #000; */
+  background-color: #c7c7c7;
 }

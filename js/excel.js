@@ -9,7 +9,6 @@
      * @param   {String}    children
      * @return  {Array}
      */
-
     const arrayToTree = (array, {
         id = 'id',
         pid = 'pid',
@@ -259,54 +258,6 @@
         render();
     };
 
-
-    // const tdEdit = (target) => {
-    //     console.log("td edit");
-
-    //     const dataid = target.getAttribute("data-id");
-    //     const datavalue = datas[dataid].value;
-    //     target.classList.add("edit-now");
-    //     target.classList.remove("change");
-
-    //     target.innerHTML = `<div class="edit-in edit-${dataid} clearfix"><input type="number" autofocus="autofocus" value="${datavalue}" /><div class="edit-in-btns"><div class="top"></div><div class="bottom"></div></div></div>`;
-    //     const inp = document.querySelector(`.edit-${dataid} input`);
-    //     const confirmBtn = document.querySelector(`.edit-${dataid} .top`);
-    //     const cancelBtn = document.querySelector(`.edit-${dataid} .bottom`);
-
-    //     const confirmEdit = (e) => {
-    //         if (e.keyCode && e.keyCode !== 13) return;
-    //         console.log("confirm edit");
-    //         const event = e || windwo.event;
-    //         const inpValue = inp.value;
-    //         if (/^\d+(.\d*)?$/.test(inpValue)) {
-    //             if (dataUpdate(datas, dataid, parseFloat(inpValue))) {
-    //                 endEdit();
-    //             }
-    //         } else if (inpValue) {
-    //             inp.value = datavalue;
-    //             alert("请输入合法数据");
-    //         }
-    //     };
-
-    //     const cancelEdit = (e) => {
-    //         const event = e || windwo.event;
-    //         console.log("cancel edit");
-    //         endEdit();
-    //     }
-
-    //     const endEdit = () => {
-    //         confirmBtn.removeEventListener("click", confirmEdit);
-    //         cancelBtn.removeEventListener("click", cancelEdit);
-    //         render();
-    //         // target.innerHTML = datas[dataid].value;
-    //         // target.classList.remove("edit-now");
-    //     };
-
-    //     confirmBtn.addEventListener("click", confirmEdit);
-    //     inp.addEventListener('keydown', confirmEdit);
-    //     cancelBtn.addEventListener("click", cancelEdit);
-    // };
-
     const TdEdit = {
         target: null,
         dataid: "",
@@ -366,18 +317,19 @@
         const matchs = target.className.match(/\bdrag-(right|bottom|)/);
         if (!matchs) return;
         const direction = matchs[1];
-        const offsetDirection = direction === 'right' ? 'offsetX' : 'offsetY';
+        const offsetDirection = direction === 'right' ? 'screenX' : 'screenY';
 
         const startMove = (target, start, offsetDirection) => {
             console.log("drag start");
-            const isWidth = offsetDirection === 'offsetX';
+            const isWidth = offsetDirection === 'screenX';
             const offsetSize = isWidth ? 'offsetWidth' : 'offsetHeight';
             const size = isWidth ? 'min-width' : 'height';
 
-            const oldSize = target[offsetSize];
+            let oldSize = target[offsetSize];
             const move = function(e) {
                 const event = e || window.event;
                 let newSize = oldSize + event[offsetDirection] - start;
+                // oldSize = newSize;
                 target.style[size] = newSize + 'px';
 
                 // 更新消息窗口
@@ -395,9 +347,9 @@
                 MessageBox.remove();
                 // 解除绑定
                 target.classList.remove("drag-start");
-                target.removeEventListener("mousemove", move);
-                target.removeEventListener("mouseup", end);
-                target.removeEventListener("mouseout", end);
+                tableCon.removeEventListener("mousemove", move);
+                tableCon.removeEventListener("mouseup", end);
+                tableCon.removeEventListener("mouseleave", end);
                 if (event.stopPropagation) {
                     event.stopPropagation();
                 } else {
@@ -405,9 +357,9 @@
                 }
             }
             target.classList.add("drag-start");
-            target.addEventListener("mousemove", move);
-            target.addEventListener("mouseup", end);
-            target.addEventListener("mouseout", end);
+            tableCon.addEventListener("mousemove", move);
+            tableCon.addEventListener("mouseup", end);
+            tableCon.addEventListener("mouseleave", end);
         }
         startMove(target, event[offsetDirection], offsetDirection);
     };

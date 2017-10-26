@@ -15,7 +15,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
      * @param   {String}    children
      * @return  {Array}
      */
-
     var arrayToTree = function arrayToTree(array) {
         var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
@@ -294,53 +293,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         render();
     };
 
-    // const tdEdit = (target) => {
-    //     console.log("td edit");
-
-    //     const dataid = target.getAttribute("data-id");
-    //     const datavalue = datas[dataid].value;
-    //     target.classList.add("edit-now");
-    //     target.classList.remove("change");
-
-    //     target.innerHTML = `<div class="edit-in edit-${dataid} clearfix"><input type="number" autofocus="autofocus" value="${datavalue}" /><div class="edit-in-btns"><div class="top"></div><div class="bottom"></div></div></div>`;
-    //     const inp = document.querySelector(`.edit-${dataid} input`);
-    //     const confirmBtn = document.querySelector(`.edit-${dataid} .top`);
-    //     const cancelBtn = document.querySelector(`.edit-${dataid} .bottom`);
-
-    //     const confirmEdit = (e) => {
-    //         if (e.keyCode && e.keyCode !== 13) return;
-    //         console.log("confirm edit");
-    //         const event = e || windwo.event;
-    //         const inpValue = inp.value;
-    //         if (/^\d+(.\d*)?$/.test(inpValue)) {
-    //             if (dataUpdate(datas, dataid, parseFloat(inpValue))) {
-    //                 endEdit();
-    //             }
-    //         } else if (inpValue) {
-    //             inp.value = datavalue;
-    //             alert("请输入合法数据");
-    //         }
-    //     };
-
-    //     const cancelEdit = (e) => {
-    //         const event = e || windwo.event;
-    //         console.log("cancel edit");
-    //         endEdit();
-    //     }
-
-    //     const endEdit = () => {
-    //         confirmBtn.removeEventListener("click", confirmEdit);
-    //         cancelBtn.removeEventListener("click", cancelEdit);
-    //         render();
-    //         // target.innerHTML = datas[dataid].value;
-    //         // target.classList.remove("edit-now");
-    //     };
-
-    //     confirmBtn.addEventListener("click", confirmEdit);
-    //     inp.addEventListener('keydown', confirmEdit);
-    //     cancelBtn.addEventListener("click", cancelEdit);
-    // };
-
     var TdEdit = {
         target: null,
         dataid: "",
@@ -398,11 +350,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var matchs = target.className.match(/\bdrag-(right|bottom|)/);
         if (!matchs) return;
         var direction = matchs[1];
-        var offsetDirection = direction === 'right' ? 'offsetX' : 'offsetY';
+        var offsetDirection = direction === 'right' ? 'screenX' : 'screenY';
 
         var startMove = function startMove(target, start, offsetDirection) {
             console.log("drag start");
-            var isWidth = offsetDirection === 'offsetX';
+            var isWidth = offsetDirection === 'screenX';
             var offsetSize = isWidth ? 'offsetWidth' : 'offsetHeight';
             var size = isWidth ? 'min-width' : 'height';
 
@@ -410,6 +362,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             var move = function move(e) {
                 var event = e || window.event;
                 var newSize = oldSize + event[offsetDirection] - start;
+                // oldSize = newSize;
                 target.style[size] = newSize + 'px';
 
                 // 更新消息窗口
@@ -427,9 +380,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 MessageBox.remove();
                 // 解除绑定
                 target.classList.remove("drag-start");
-                target.removeEventListener("mousemove", move);
-                target.removeEventListener("mouseup", end);
-                target.removeEventListener("mouseout", end);
+                tableCon.removeEventListener("mousemove", move);
+                tableCon.removeEventListener("mouseup", end);
+                tableCon.removeEventListener("mouseleave", end);
                 if (event.stopPropagation) {
                     event.stopPropagation();
                 } else {
@@ -437,9 +390,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
             };
             target.classList.add("drag-start");
-            target.addEventListener("mousemove", move);
-            target.addEventListener("mouseup", end);
-            target.addEventListener("mouseout", end);
+            tableCon.addEventListener("mousemove", move);
+            tableCon.addEventListener("mouseup", end);
+            tableCon.addEventListener("mouseleave", end);
         };
         startMove(target, event[offsetDirection], offsetDirection);
     };

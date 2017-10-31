@@ -266,43 +266,51 @@
         confirmBtn: null,
         cancelBtn: null,
         start(target) {
-            if (this.target) this.endEdit(this.datavalue);
-            console.log("td edit");
-            this.target = target;
-            this.dataid = target.getAttribute("data-id");
-            this.datavalue = datas[this.dataid].value;
-            this.target.classList.add("edit-now");
+            if (!this.target || this.confirmEdit()) {
+                console.log("td edit");
+                this.target = target;
+                this.dataid = target.getAttribute("data-id");
+                this.datavalue = datas[this.dataid].value;
+                this.target.classList.add("edit-now");
 
-            this.target.innerHTML = `<div class="edit-in edit-${this.dataid} clearfix"><input type="number" value="${this.datavalue}" /><div class="edit-in-btns"><div class="top"></div><div class="bottom"></div></div></div>`;
-            this.inp = document.querySelector(`.edit-${this.dataid} input`);
-            this.confirmBtn = document.querySelector(`.edit-${this.dataid} .top`);
-            this.cancelBtn = document.querySelector(`.edit-${this.dataid} .bottom`);
-
-            this.confirmBtn.addEventListener("click", this.confirmEdit.bind(this));
-            this.inp.addEventListener('keydown', this.confirmEdit.bind(this));
-            this.cancelBtn.addEventListener("click", this.endEdit.bind(this));
+                this.target.innerHTML = `<div class="edit-in edit-${this.dataid} clearfix"><input type="text" value="${this.datavalue}" style="width:${this.target.offsetWidth - 21}px;" /></div>`;
+                this.inp = document.querySelector(`.edit-${this.dataid} input`);
+                this.inp.addEventListener('keydown', this.confirmEdit.bind(this));
+                this.setInpWidth();
+            }
+        },
+        setInpWidth() {
+            if (document.body.style.msflex !== undefined || document.body.style.flex !== undefined) {
+                this.setInpWidth = null;
+            } else {
+                this.setInpWidth = function(width) {
+                    if (this.inp && width) {
+                        this.inp.style.width = width + 'px';
+                    }
+                };
+            }
         },
         confirmEdit(e) {
-            if (e.keyCode && e.keyCode !== 13) return;
+            if (e && e.keyCode && e.keyCode !== 13) return;
             console.log("confirm edit");
-            const event = e || windwo.event;
             const inpValue = this.inp.value;
             if (/^\d+(\.\d*)?$/.test(inpValue)) {
-                if (dataUpdate(datas, this.dataid, parseFloat(inpValue))) {
-                    this.endEdit();
+                if (!dataUpdate(datas, this.dataid, parseFloat(inpValue))) {
+                    this.target.innerHTML = this.datavalue;
                 }
-            } else if (inpValue) {
+                this.endEdit();
+                return true;
+            } else {
                 this.inp.value = this.datavalue;
-                alert("请输入合法数据");
+                alert("请输入整数或者小数");
+                return false;
             }
         },
         endEdit(value) {
             console.log("end edit");
             if (value !== undefined) this.target.innerText = this.datavalue;
             this.target.classList.remove("edit-now");
-            this.confirmBtn.removeEventListener("click", this.confirmEdit);
             this.inp.removeEventListener('keydown', this.confirmEdit);
-            this.cancelBtn.removeEventListener("click", this.endEdit);
             this.target = null;
         },
     }
@@ -322,22 +330,27 @@
         const startMove = (target, start, offsetDirection) => {
             console.log("drag start");
             const isWidth = offsetDirection === 'screenX';
+            const isFlexDisabled = TdEdit.setInpWidth && target.offsetLeft === TdEdit.target.offsetLeft;
             const offsetSize = isWidth ? 'offsetWidth' : 'offsetHeight';
             const size = isWidth ? 'min-width' : 'height';
 
             let oldSize = target[offsetSize];
             const move = function(e) {
-                const event = e || window.event;
-                let newSize = oldSize + event[offsetDirection] - start;
+                var event = e || window.event;
+                var newSize = oldSize + event[offsetDirection] - start;
                 // oldSize = newSize;
-                target.style[size] = newSize + 'px';
+                if (!isWidth || newSize >= 120) {
+                    isFlexDisabled && TdEdit.setInpWidth(newSize - 21);
+                    target.style[size] = newSize + 'px';
 
-                // 更新消息窗口
-                MessageBox.set(event, (isWidth ? '宽度： ' : '高度： ') + Math.floor(newSize) + 'px');
-                if (event.stopPropagation) {
-                    event.stopPropagation();
-                } else {
-                    event.cancelBubble = true;
+                    // 更新消息窗口
+                    MessageBox.set(event, (isWidth ? '宽度： ' : '高度： ') + Math.floor(newSize) + 'px');
+
+                    if (event.stopPropagation) {
+                        event.stopPropagation();
+                    } else {
+                        event.cancelBubble = true;
+                    }
                 }
             }
             const end = function(e) {

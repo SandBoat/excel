@@ -1,10 +1,29 @@
 'use strict';
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+function _toConsumableArray(arr) {
+    if (Array.isArray(arr)) {
+        for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+        return arr2;
+    } else {
+        return Array.from(arr);
+    }
+}
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty(obj, key, value) {
+    if (key in obj) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+    } else {
+        obj[key] = value;
+    }
+    return obj;
+}
 
-(function (window) {
+(function(window) {
     "use strict";
     if (window.creatExcel) return;
     /**
@@ -31,11 +50,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         // let data = array;
         var result = [];
         var hash = {};
-        data.forEach(function (item, index) {
+        data.forEach(function(item, index) {
             hash[data[index][id]] = data[index];
         });
 
-        data.forEach(function (item) {
+        data.forEach(function(item) {
             var hashVP = hash[item[pid]];
             if (hashVP) {
                 if (!hashVP[children]) {
@@ -67,13 +86,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var dataRowPid = _ref2$dataRowPid === undefined ? 'rowpid' : _ref2$dataRowPid;
 
         var datas = {};
-        cols.forEach(function (col) {
-            rows.forEach(function (row) {
+        cols.forEach(function(col) {
+            rows.forEach(function(row) {
                 var _datas$did;
 
                 var did = col[colid] + '-' + row[rowid];
                 datas[did] = (_datas$did = {
-                    value: 0,
+                    value: "",
                     canedit: false
                 }, _defineProperty(_datas$did, dataColPid, col[colpid] ? col[colpid] + '-' + row[rowid] : ""), _defineProperty(_datas$did, dataRowPid, row[rowpid] ? col[colid] + '-' + row[rowpid] : ""), _defineProperty(_datas$did, 'ischange', false), _datas$did);
 
@@ -109,23 +128,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var _ref3$dataRowPid = _ref3.dataRowPid;
         var dataRowPid = _ref3$dataRowPid === undefined ? 'rowpid' : _ref3$dataRowPid;
 
-        var dValue = value - datas[dataid].value;
-        if (dValue) {
-            document.querySelector('td[data-id = "' + dataid + '"]').innerText = datas[dataid].value = value;
+        var dValue = BigNumber.sub(value, datas[dataid].value);
+        if (dValue !== '0') {
+            var temp = value;
+            datas[dataid].value = temp !== '0' ? temp : '';
+            document.querySelector('td[data-id = "' + dataid + '"]').innerText = datas[dataid].value;
             document.querySelector('td[data-id = "' + dataid + '"]').classList.add("change");
             datas[dataid].ischange = true;
             if (datas[dataid][dataColPid] && datas[dataid][dataRowPid]) {
-                document.querySelector('td[data-id = "' + datas[dataid][dataColPid] + '"]').innerText = datas[datas[dataid][dataColPid]].value += dValue;
+                temp = BigNumber.sum(datas[datas[dataid][dataColPid]].value, dValue);;
+                datas[datas[dataid][dataColPid]].value = temp !== '0' ? temp : '';
+                document.querySelector('td[data-id = "' + datas[dataid][dataColPid] + '"]').innerText = datas[datas[dataid][dataColPid]].value;
                 datas[datas[dataid][dataColPid]].ischange = true;
-                document.querySelector('td[data-id = "' + datas[dataid][dataRowPid] + '"]').innerText = datas[datas[dataid][dataRowPid]].value += dValue;
+
+                temp = BigNumber.sum(datas[datas[dataid][dataRowPid]].value, dValue);
+                datas[datas[dataid][dataRowPid]].value = temp !== '0' ? temp : '';
+                document.querySelector('td[data-id = "' + datas[dataid][dataRowPid] + '"]').innerText = datas[datas[dataid][dataRowPid]].value;
                 datas[datas[dataid][dataRowPid]].ischange = true;
-                document.querySelector('td[data-id = "' + datas[datas[dataid][dataColPid]][dataRowPid] + '"]').innerText = datas[datas[datas[dataid][dataColPid]][dataRowPid]].value += dValue;
+
+                temp = BigNumber.sum(datas[datas[datas[dataid][dataColPid]][dataRowPid]].value, dValue);
+                datas[datas[datas[dataid][dataColPid]][dataRowPid]].value = temp !== '0' ? temp : '';
+                document.querySelector('td[data-id = "' + datas[datas[dataid][dataColPid]][dataRowPid] + '"]').innerText = datas[datas[datas[dataid][dataColPid]][dataRowPid]].value;
                 datas[datas[datas[dataid][dataColPid]][dataRowPid]].ischange = true;
             } else if (datas[dataid][dataRowPid]) {
-                document.querySelector('td[data-id = "' + datas[dataid][dataRowPid] + '"]').innerText = datas[datas[dataid][dataRowPid]].value += dValue;
+                temp = BigNumber.sum(datas[datas[dataid][dataRowPid]].value, dValue);
+                datas[datas[dataid][dataRowPid]].value = temp !== '0' ? temp : '';
+                document.querySelector('td[data-id = "' + datas[dataid][dataRowPid] + '"]').innerText = datas[datas[dataid][dataRowPid]].value;
                 datas[datas[dataid][dataRowPid]].ischange = true;
             } else if (datas[dataid][dataColPid]) {
-                document.querySelector('td[data-id = "' + datas[dataid][dataColPid] + '"]').innerText = datas[datas[dataid][dataColPid]].value += dValue;
+                temp = BigNumber.sum(datas[datas[dataid][dataColPid]].value, dValue);
+                datas[datas[dataid][dataColPid]].value = temp !== '0' ? temp : '';
+                document.querySelector('td[data-id = "' + datas[dataid][dataColPid] + '"]').innerText = datas[datas[dataid][dataColPid]].value;
                 datas[datas[dataid][dataRowPid]].ischange = true;
             }
             console.log("脏单元格数据:");
@@ -150,11 +183,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var children = _ref4$children === undefined ? 'children' : _ref4$children;
 
         var trs = '';
-        colTree.forEach(function (item) {
+        colTree.forEach(function(item) {
             var tds = '',
                 display = "table-row";
             // if (isfold) display = "none";
-            rowids.forEach(function (rid) {
+            rowids.forEach(function(rid) {
                 var dataid = item[id] + '-' + rid;
                 var tdClass = datas[dataid].canedit ? 'edit' + (datas[dataid]["ischange"] ? ' change' : '') : '';
                 tds += '<td class="' + tdClass + '" data-id=\'' + dataid + '\'>' + datas[dataid].value + '</td>';
@@ -196,12 +229,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         var tableHead = '<th></th>',
             rowids = [];
-        rowTree.forEach(function (item, index) {
+        rowTree.forEach(function(item, index) {
             if (item[rowchildren]) {
                 tableHead += '<th class="' + (item[rowisfold] ? 'fold' : 'open') + ' drag drag-right"><span class="toggle"  data-toggle="row ' + index + '"></span>' + item[rowName] + '</th>';
                 rowids.push(item[rowid]);
                 if (!item[rowisfold]) {
-                    item[rowchildren].forEach(function (itemc) {
+                    item[rowchildren].forEach(function(itemc) {
                         tableHead += '<th class="drag drag-right">' + itemc[rowName] + '</th>';
                         rowids.push(itemc[rowid]);
                     });
@@ -214,17 +247,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         tableHead = '<tr>' + tableHead + '</tr>';
 
         var tableBody = '';
-        colTree.forEach(function (item, index) {
+        colTree.forEach(function(item, index) {
             var tds = '';
             if (item[colchildren]) {
-                rowids.forEach(function (id) {
+                rowids.forEach(function(id) {
                     var dataid = item[colid] + '-' + id;
                     tds += '<td data-id=\'' + dataid + '\'>' + datas[dataid].value + '</td>';
                 });
                 tableBody += '<tr data-tr-level="0"><th class="' + (item[colisfold] ? 'fold' : 'open') + '  drag drag-bottom"><span class="toggle" data-toggle="col ' + index + '"></span>' + item[colName] + '</th>' + tds + '</tr>';
                 if (!item[colisfold]) tableBody += cteatrTableTr(item[colchildren], rowids, datas);
             } else {
-                rowids.forEach(function (id) {
+                rowids.forEach(function(id) {
                     var dataid = item[colid] + '-' + id;
                     var tdClass = datas[dataid].canedit ? 'edit' + (datas[dataid]["ischange"] ? ' change' : '') : '';
                     tds += '<td  class=' + tdClass + ' data-id=\'' + dataid + '\'>' + datas[dataid].value + '</td>';
@@ -311,14 +344,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 this.target.innerHTML = '<div class="edit-in edit-' + this.dataid + ' clearfix"><input type="text" value="' + this.datavalue + '" style="width:' + (this.target.offsetWidth - 21) + 'px;" /></div>';
                 this.inp = document.querySelector('.edit-' + this.dataid + ' input');
                 this.inp.addEventListener('keydown', this.confirmEdit.bind(this));
-                this.setInpWidth();
+                this.setInpWidth || this.setInpWidth();
             }
         },
         setInpWidth: function setInpWidth() {
             if (document.body.style.msflex !== undefined || document.body.style.flex !== undefined) {
                 this.setInpWidth = null;
             } else {
-                this.setInpWidth = function (width) {
+                this.setInpWidth = function(width) {
                     if (this.inp && width) {
                         this.inp.style.width = width + 'px';
                     }
@@ -330,15 +363,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             console.log("confirm edit");
             var inpValue = this.inp.value;
             if (/^\d+(\.\d*)?$/.test(inpValue)) {
-                if (!dataUpdate(datas, this.dataid, parseFloat(inpValue))) {
+                if (!dataUpdate(datas, this.dataid, inpValue)) {
                     this.target.innerHTML = this.datavalue;
                 }
                 this.endEdit();
                 return true;
-            } else {
+            } else if (inpValue.length > 0) {
                 this.inp.value = this.datavalue;
                 alert("请输入整数或者小数");
                 return false;
+            } else {
+                this.target.innerHTML = this.datavalue;
+                this.endEdit();
+                return true;
             }
         },
         endEdit: function endEdit(value) {
@@ -426,7 +463,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         tableCon = document.getElementById(id);
         render();
 
-        tableCon.addEventListener("click", function (e) {
+        tableCon.addEventListener("click", function(e) {
             var event = e || window.event;
             if (event) {
                 var target = event.target || event.srcElement;
@@ -438,7 +475,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
             }
         });
-        tableCon.addEventListener("mousedown", function (e) {
+        tableCon.addEventListener("mousedown", function(e) {
             var event = e || window.event;
             if (event) {
                 var target = event.target || event.srcElement;
@@ -447,7 +484,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
             }
         });
-        tableCon.addEventListener("mousemove", function (e) {
+        tableCon.addEventListener("mousemove", function(e) {
             var event = e || window.event;
             if (event) {
                 var target = event.target || event.srcElement;

@@ -49,10 +49,9 @@
         var datas = {};
         cols.forEach((col) => {
             rows.forEach((row) => {
-
                 let did = `${col[colid]}-${row[rowid]}`;
                 datas[did] = {
-                    value: 0,
+                    value: "",
                     canedit: false,
                     [dataColPid]: col[colpid] ? `${col[colpid]}-${row[rowid]}` : "",
                     [dataRowPid]: row[rowpid] ? `${col[colid]}-${row[rowpid]}` : "",
@@ -87,23 +86,37 @@
         dataColPid = 'colpid',
         dataRowPid = 'rowpid',
     } = {}) => {
-        const dValue = value - datas[dataid].value;
-        if (dValue) {
-            document.querySelector(`td[data-id = "${dataid}"]`).innerText = datas[dataid].value = value;
+        const dValue = BigNumber.sub(value, datas[dataid].value);
+        if (dValue !== '0') {
+            let temp = value;
+            datas[dataid].value = temp !== '0' ? temp : '';
+            document.querySelector(`td[data-id = "${dataid}"]`).innerText = datas[dataid].value;
             document.querySelector(`td[data-id = "${dataid}"]`).classList.add("change");
-            datas[dataid].ischange = true;
+            datas[dataid].ischange = temp !== '0' ? true : false;
             if (datas[dataid][dataColPid] && datas[dataid][dataRowPid]) {
-                document.querySelector(`td[data-id = "${datas[dataid][dataColPid]}"]`).innerText = datas[datas[dataid][dataColPid]].value += dValue;
+                temp = BigNumber.sum(datas[datas[dataid][dataColPid]].value, dValue);;
+                datas[datas[dataid][dataColPid]].value = temp !== '0' ? temp : '';
+                document.querySelector(`td[data-id = "${datas[dataid][dataColPid]}"]`).innerText = datas[datas[dataid][dataColPid]].value;
                 datas[datas[dataid][dataColPid]].ischange = true;
-                document.querySelector(`td[data-id = "${datas[dataid][dataRowPid]}"]`).innerText = datas[datas[dataid][dataRowPid]].value += dValue;
+
+                temp = BigNumber.sum(datas[datas[dataid][dataRowPid]].value, dValue);
+                datas[datas[dataid][dataRowPid]].value = temp !== '0' ? temp : '';
+                document.querySelector(`td[data-id = "${datas[dataid][dataRowPid]}"]`).innerText = datas[datas[dataid][dataRowPid]].value;
                 datas[datas[dataid][dataRowPid]].ischange = true;
-                document.querySelector(`td[data-id = "${datas[datas[dataid][dataColPid]][dataRowPid]}"]`).innerText = datas[datas[datas[dataid][dataColPid]][dataRowPid]].value += dValue;
+
+                temp = BigNumber.sum(datas[datas[datas[dataid][dataColPid]][dataRowPid]].value, dValue);
+                datas[datas[datas[dataid][dataColPid]][dataRowPid]].value = temp !== '0' ? temp : '';
+                document.querySelector(`td[data-id = "${datas[datas[dataid][dataColPid]][dataRowPid]}"]`).innerText = datas[datas[datas[dataid][dataColPid]][dataRowPid]].value;
                 datas[datas[datas[dataid][dataColPid]][dataRowPid]].ischange = true;
             } else if (datas[dataid][dataRowPid]) {
-                document.querySelector(`td[data-id = "${datas[dataid][dataRowPid]}"]`).innerText = datas[datas[dataid][dataRowPid]].value += dValue;
+                temp = BigNumber.sum(datas[datas[dataid][dataRowPid]].value, dValue);
+                datas[datas[dataid][dataRowPid]].value = temp !== '0' ? temp : '';
+                document.querySelector(`td[data-id = "${datas[dataid][dataRowPid]}"]`).innerText = datas[datas[dataid][dataRowPid]].value;
                 datas[datas[dataid][dataRowPid]].ischange = true;
             } else if (datas[dataid][dataColPid]) {
-                document.querySelector(`td[data-id = "${datas[dataid][dataColPid]}"]`).innerText = datas[datas[dataid][dataColPid]].value += dValue;
+                temp = BigNumber.sum(datas[datas[dataid][dataColPid]].value, dValue);
+                datas[datas[dataid][dataColPid]].value = temp !== '0' ? temp : '';
+                document.querySelector(`td[data-id = "${datas[dataid][dataColPid]}"]`).innerText = datas[datas[dataid][dataColPid]].value;
                 datas[datas[dataid][dataRowPid]].ischange = true;
             }
             console.log("脏单元格数据:");
@@ -276,7 +289,7 @@
                 this.target.innerHTML = `<div class="edit-in edit-${this.dataid} clearfix"><input type="text" value="${this.datavalue}" style="width:${this.target.offsetWidth - 21}px;" /></div>`;
                 this.inp = document.querySelector(`.edit-${this.dataid} input`);
                 this.inp.addEventListener('keydown', this.confirmEdit.bind(this));
-                this.setInpWidth();
+                this.setInpWidth || this.setInpWidth();
             }
         },
         setInpWidth() {
@@ -295,15 +308,19 @@
             console.log("confirm edit");
             const inpValue = this.inp.value;
             if (/^\d+(\.\d*)?$/.test(inpValue)) {
-                if (!dataUpdate(datas, this.dataid, parseFloat(inpValue))) {
+                if (!dataUpdate(datas, this.dataid, inpValue)) {
                     this.target.innerHTML = this.datavalue;
                 }
                 this.endEdit();
                 return true;
-            } else {
+            } else if (inpValue.length > 0) {
                 this.inp.value = this.datavalue;
                 alert("请输入整数或者小数");
                 return false;
+            } else {
+                this.target.innerHTML = this.datavalue;
+                this.endEdit();
+                return true;
             }
         },
         endEdit(value) {
